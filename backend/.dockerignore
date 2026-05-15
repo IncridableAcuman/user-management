@@ -1,0 +1,7 @@
+.gitignore
+.dockerignore
+.mvn
+.idea/
+.vscode/
+Dockerfile
+.git
