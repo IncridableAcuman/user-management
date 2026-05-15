@@ -1,4 +1,12 @@
 package com.auth.backend.repository;
 
-public interface UserRepository {
+import com.auth.backend.entity.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity,Long> {
+    Optional<UserEntity> findByEmail(String email);
 }
