@@ -64,7 +64,7 @@ public class JwtUtil {
 
         long currentMillis = System.currentTimeMillis();
         Date issueAt = new Date(currentMillis);
-        Date expiration = new Date(accessTime + currentMillis);
+        Date expiration = new Date(refreshTime + currentMillis);
 
         return Jwts
                 .builder()
@@ -91,10 +91,13 @@ public class JwtUtil {
     public Date extractExpiration(String token){
         return extractClaims(token).getExpiration();
     }
+    public boolean isTokenExpired(String token){
+        return extractExpiration(token).before(new Date());
+    }
     public boolean validateToken(String token,String subject){
         try {
             UserEntity user = extractUser(token);
-            return user.getEmail().equals(subject) && extractExpiration(token).before(new Date());
+            return user.getEmail().equals(subject) && !isTokenExpired(token);
         } catch (Exception e){
             return false;
         }
