@@ -1,4 +1,7 @@
 package com.auth.backend.exception;
 
-public class CustomInternalServerErrorException {
+public class CustomInternalServerErrorException extends RuntimeException{
+    public CustomInternalServerErrorException(String message){
+        super(message);
+    }
 }
