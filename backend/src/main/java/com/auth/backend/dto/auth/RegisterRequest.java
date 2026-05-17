@@ -1,5 +1,6 @@
 package com.auth.backend.dto.auth;
 
+import com.auth.backend.constant.ResponseMessage;
 import com.auth.backend.entity.enums.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,20 +10,20 @@ import lombok.Data;
 
 @Data
 public class RegisterRequest {
-    @NotBlank(message = "Firstname must be required")
-    @Size(min = 3,max = 50,message = "Firstname must be between 3 and 50 characters long")
+    @NotBlank(message = ResponseMessage.FIRST_NAME_REQUIRED)
+    @Size(min = 3,max = 50,message = ResponseMessage.FIRST_NAME_REQUIRED_LENGTH)
     private String firstName;
-    @NotBlank(message = "Lastname must be required")
-    @Size(min = 3,max = 50,message = "Lastname must be between 3 and 50 characters long")
+    @NotBlank(message = ResponseMessage.LAST_NAME_REQUIRED)
+    @Size(min = 3,max = 50,message = ResponseMessage.LAST_NAME_REQUIRED_LENGTH)
     private String lastName;
-    @NotBlank(message = "Lastname must be required")
-    @Size(min = 3,max = 50,message = "Lastname must be between 3 and 50 characters long")
+    @NotBlank(message = ResponseMessage.USER_NAME_REQUIRED)
+    @Size(min = 3,max = 50,message = ResponseMessage.USER_NAME_REQUIRED_LENGTH)
     private String username;
-    @Email(message = "Invalid email format")
+    @Email(message = ResponseMessage.INVALID_EMAIL)
     private String email;
-    @NotBlank(message = "Password must be required")
-    @Size(min = 8,max = 50,message = "Password must be between 8 and 50 characters long")
+    @NotBlank(message = ResponseMessage.PASSWORD_REQUIRED)
+    @Size(min = 8,max = 50,message = ResponseMessage.PASSWORD_REQUIRED_LENGTH)
     private String password;
-    @NotNull(message = "Gender must be required")
+    @NotNull(message = ResponseMessage.GENDER_REQUIRED)
     private Gender gender;
 }

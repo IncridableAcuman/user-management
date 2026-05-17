@@ -1,5 +1,6 @@
 package com.auth.backend.util;
 
+import com.auth.backend.constant.ResponseMessage;
 import com.auth.backend.entity.UserEntity;
 import com.auth.backend.exception.CustomNotFoundException;
 import com.auth.backend.repository.UserRepository;
@@ -104,6 +105,6 @@ public class JwtUtil {
     }
     public UserEntity extractUser(String token){
         String email = extractEmail(token);
-        return userRepository.findByEmail(email).orElseThrow(()-> new CustomNotFoundException("User not found"));
+        return userRepository.findByEmail(email).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
     }
 }

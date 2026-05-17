@@ -10,7 +10,7 @@ public class CookieUtil {
     @Value("${jwt.refresh_time}")
     private int refreshTime;
 
-    public static void cookieManagement(String refreshToken,int expiration, HttpServletResponse response){
+    private static  void cookieManagement(String refreshToken,int expiration, HttpServletResponse response){
         Cookie cookie = new Cookie("refreshToken",refreshToken);
         cookie.setValue(refreshToken);
         cookie.setHttpOnly(true);
