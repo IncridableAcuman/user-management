@@ -8,7 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -50,7 +52,32 @@ public class UserEntity implements UserDetails {
     private String phone;
 
     @Column(name = "enabled")
-    private boolean enabled;
+    private boolean enabled=false;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Column(name = "birth_date")
+    private Date birthDate;
+
+    @Column(name = "bio",length = 500)
+    private String bio;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate(){
+        this.createdAt=LocalDateTime.now();
+        this.updatedAt=LocalDateTime.now();
+    }
+    @PreUpdate
+    public void onUpdate(){
+        this.updatedAt=LocalDateTime.now();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
