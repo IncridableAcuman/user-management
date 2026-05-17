@@ -1,4 +1,4 @@
-import {Button} from "@/components/ui/button.tsx";
+import {Button} from "@/shared/ui/button.tsx";
 
 const App = () => {
     return (
