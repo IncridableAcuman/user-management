@@ -3,7 +3,6 @@ package com.auth.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class TokenEntity implements Serializable {
+public class TokenEntity   {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

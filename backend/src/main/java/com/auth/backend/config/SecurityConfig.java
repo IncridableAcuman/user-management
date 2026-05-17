@@ -28,7 +28,14 @@ public class SecurityConfig {
         http
                 .cors(cors->cors.configurationSource(corsConfig.corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth->auth.requestMatchers(Endpoint.AUTH + "/**").permitAll()
+                .authorizeHttpRequests(auth->auth
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/api-docs",
+                                "/api-docs/**"
+                        ).permitAll()
+                        .requestMatchers(Endpoint.AUTH + "/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
