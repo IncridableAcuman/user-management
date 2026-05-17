@@ -1,11 +1,12 @@
-import {Button} from "@/shared/ui/button.tsx";
+import {Routes,Route} from "react-router-dom";
 
 const App = () => {
     return (
-        <div>
-            <h1>App</h1>
-            <Button>Click me</Button>
-        </div>
+        <>
+           <Routes>
+               <Route path={} element={} />
+           </Routes>
+        </>
     )
 }
 export default App;
