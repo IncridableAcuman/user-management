@@ -9,6 +9,7 @@ public final class ResponseMessage {
     public static final String UNAUTHORIZED="unauthorized";
     public static final String INVALID_EMAIL="invalid email format";
     public static final String INVALID_TOKEN="invalid token";
+    public static final String EXPIRED_TOKEN="token is expired";
     public static final String TOKEN_REQUIRED="token is required";
     public static final String FIRST_NAME_REQUIRED="firstname must be required";
     public static final String LAST_NAME_REQUIRED="lastname must be required";
@@ -21,5 +22,7 @@ public final class ResponseMessage {
     public static final String USER_NAME_REQUIRED_LENGTH="username must be between 3 and 50 characters long";
     public static final String PASSWORD_REQUIRED_LENGTH="password must be between 8 and 50 characters long";
     public static final String CONFIRM_PASSWORD_REQUIRED_LENGTH="confirm password must be between 8 and 50 characters long";
+    public static final String EXIST_USER="user already exist";
+    public static final String MISMATCH_PASSWORD="password is mismatch";
 
 }
