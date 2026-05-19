@@ -2,14 +2,12 @@ package com.auth.backend.service;
 
 import com.auth.backend.constant.ResponseMessage;
 import com.auth.backend.dto.auth.*;
-import com.auth.backend.entity.TokenEntity;
 import com.auth.backend.entity.UserEntity;
 import com.auth.backend.entity.enums.UserRole;
 import com.auth.backend.exception.CustomBadRequestException;
 import com.auth.backend.exception.CustomNotFoundException;
 import com.auth.backend.exception.CustomUnauthorizedException;
 import com.auth.backend.producer.RabbitMQProducer;
-import com.auth.backend.repository.TokenRepository;
 import com.auth.backend.repository.UserRepository;
 import com.auth.backend.util.CookieUtil;
 import com.auth.backend.util.JwtUtil;
@@ -18,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +24,9 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final CookieUtil cookieUtil;
     private final UserRepository userRepository;
-    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final RabbitMQProducer rabbitMQProducer;
+    private final TokenService tokenService;
 
     public AuthResponse register(RegisterRequest request, HttpServletResponse response){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -48,11 +45,7 @@ public class AuthService {
         String accessToken = jwtUtil.generateAccessToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user);
 
-        TokenEntity token = new TokenEntity();
-        token.setUser(user);
-        token.setRefreshToken(refreshToken);
-        token.setExpiration(LocalDateTime.now().plusDays(7));
-        tokenRepository.save(token);
+        tokenService.createToken(user,refreshToken);
 
         cookieUtil.addCookie(refreshToken,response);
 
@@ -66,11 +59,7 @@ public class AuthService {
         String accessToken = jwtUtil.generateAccessToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user);
 
-        TokenEntity token = new TokenEntity();
-        token.setUser(user);
-        token.setRefreshToken(refreshToken);
-        token.setExpiration(LocalDateTime.now().plusDays(7));
-        tokenRepository.save(token);
+        tokenService.createToken(user,refreshToken);
 
         cookieUtil.addCookie(refreshToken,response);
 
@@ -81,18 +70,11 @@ public class AuthService {
         if (!jwtUtil.validateToken(refreshToken,user.getEmail())){
             throw new CustomUnauthorizedException(ResponseMessage.INVALID_TOKEN);
         }
-        TokenEntity existToken = tokenRepository.findByRefreshToken(refreshToken).orElseThrow();
-        tokenRepository.delete(existToken);
         String newAccessToken = jwtUtil.generateAccessToken(user);
         String newRefreshToken = jwtUtil.generateRefreshToken(user);
 
-        TokenEntity token = new TokenEntity();
-        token.setUser(user);
-        token.setRefreshToken(newRefreshToken);
-        token.setExpiration(LocalDateTime.now().plusDays(7));
-        tokenRepository.save(token);
 
-        cookieUtil.addCookie(refreshToken,response);
+        cookieUtil.addCookie(newRefreshToken,response);
 
         return AuthResponse.from(newAccessToken);
     }
@@ -102,8 +84,6 @@ public class AuthService {
             throw new CustomUnauthorizedException(ResponseMessage.INVALID_TOKEN);
         }
         cookieUtil.clearCookie(response);
-        TokenEntity token = tokenRepository.findByRefreshToken(refreshToken).orElseThrow();
-        tokenRepository.delete(token);
     }
     public void forgotPassword(ForgotPasswordRequest request){
         UserEntity user = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
