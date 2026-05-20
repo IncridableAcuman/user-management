@@ -1,7 +1,8 @@
 package com.auth.backend.service;
 
+import com.auth.backend.constant.EnvironmentValues;
 import com.auth.backend.exception.CustomInternalServerErrorException;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,13 +14,14 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class FileService {
-    @Value("${file.upload.dir}")
-    public String uploadDir;
+    private final EnvironmentValues environmentValues;
+
 
     public String  saveFile(MultipartFile file){
         try {
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath = Paths.get(environmentValues.uploadDir);
             if (!Files.exists(uploadPath)){
                 Files.createDirectories(uploadPath);
             }

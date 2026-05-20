@@ -1,14 +1,15 @@
 package com.auth.backend.util;
 
+import com.auth.backend.constant.EnvironmentValues;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CookieUtil {
-    @Value("${jwt.refresh_time}")
-    private int refreshTime;
+    private final EnvironmentValues environmentValues;
 
     private static  void cookieManagement(String refreshToken,int expiration, HttpServletResponse response){
         Cookie cookie = new Cookie("refreshToken",refreshToken);
@@ -21,7 +22,7 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
     public void addCookie(String refreshToken,HttpServletResponse response){
-        cookieManagement(refreshToken,refreshTime,response);
+        cookieManagement(refreshToken,environmentValues.getRefreshTime(),response);
     }
     public void clearCookie(HttpServletResponse response){
         cookieManagement(null,0,response);

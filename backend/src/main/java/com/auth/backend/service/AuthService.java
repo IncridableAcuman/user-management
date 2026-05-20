@@ -1,5 +1,6 @@
 package com.auth.backend.service;
 
+import com.auth.backend.constant.EnvironmentValues;
 import com.auth.backend.constant.ResponseMessage;
 import com.auth.backend.dto.auth.*;
 import com.auth.backend.entity.UserEntity;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -27,6 +29,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RabbitMQProducer rabbitMQProducer;
     private final TokenService tokenService;
+    private final EnvironmentValues environmentValues;
 
     public AuthResponse register(RegisterRequest request, HttpServletResponse response){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -40,26 +43,26 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(UserRole.USER);
         user.setGender(request.getGender());
-        userRepository.save(user);
+        saveUser(user);
 
         String accessToken = jwtUtil.generateAccessToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user);
 
-        tokenService.createToken(user,refreshToken);
+        tokenService.saveToken(user,refreshToken);
 
         cookieUtil.addCookie(refreshToken,response);
 
         return AuthResponse.from(accessToken);
     }
     public AuthResponse login(LoginRequest request,HttpServletResponse response){
-        UserEntity user = userRepository.findByEmail(request.getEmail()).orElseThrow(()->new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+        UserEntity user = findUserByEmail(request.getEmail());
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new CustomBadRequestException(ResponseMessage.MISMATCH_PASSWORD);
         }
         String accessToken = jwtUtil.generateAccessToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user);
 
-        tokenService.createToken(user,refreshToken);
+        tokenService.saveToken(user,refreshToken);
 
         cookieUtil.addCookie(refreshToken,response);
 
@@ -73,7 +76,7 @@ public class AuthService {
         String newAccessToken = jwtUtil.generateAccessToken(user);
         String newRefreshToken = jwtUtil.generateRefreshToken(user);
 
-
+        tokenService.saveToken(user,newRefreshToken);
         cookieUtil.addCookie(newRefreshToken,response);
 
         return AuthResponse.from(newAccessToken);
@@ -83,12 +86,13 @@ public class AuthService {
         if (!jwtUtil.validateToken(refreshToken,user.getEmail())){
             throw new CustomUnauthorizedException(ResponseMessage.INVALID_TOKEN);
         }
+        tokenService.removeToken(user);
         cookieUtil.clearCookie(response);
     }
     public void forgotPassword(ForgotPasswordRequest request){
-        UserEntity user = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+        UserEntity user = findUserByEmail(request.getEmail());
         String token = jwtUtil.generateAccessToken(user);
-        String url = "http://localhost:5173/reset-password?token=" + token;
+        String url = environmentValues.getClientUrl() + "/reset-password?token=" + token;
 
         EmailPayload payload = new EmailPayload(user.getEmail(),"Reset Password",url);
         rabbitMQProducer.sendMessageWithRabbitMQ(payload);
@@ -102,6 +106,15 @@ public class AuthService {
         }
         UserEntity user = jwtUtil.extractUser(request.getToken());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        saveUser(user);
+    }
+
+    public UserEntity findUserByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+    }
+
+    @Transactional
+    public void saveUser(UserEntity user){
         userRepository.save(user);
     }
 }

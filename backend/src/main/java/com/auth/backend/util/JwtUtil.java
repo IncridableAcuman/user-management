@@ -1,5 +1,6 @@
 package com.auth.backend.util;
 
+import com.auth.backend.constant.EnvironmentValues;
 import com.auth.backend.constant.ResponseMessage;
 import com.auth.backend.entity.UserEntity;
 import com.auth.backend.exception.CustomNotFoundException;
@@ -9,7 +10,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -21,22 +21,19 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-    @Value("${jwt.access_time}")
-    private int accessTime;
-    @Value("${jwt.refresh_time}")
-    private int refreshTime;
+
     private Key key;
 
     private final UserRepository userRepository;
+    private final EnvironmentValues environmentValues;
+
 
     @PostConstruct
     public void init(){
-        this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        this.key = Keys.hmacShaKeyFor(environmentValues.getJwtSecret().getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateAccessToken(UserEntity user){
+    private String generateToken(UserEntity user,int expiration){
         Map<String,Object> claims = new HashMap<>();
 
         claims.put("id",user.getId());
@@ -45,36 +42,22 @@ public class JwtUtil {
 
         long currentMillis = System.currentTimeMillis();
         Date issueAt = new Date(currentMillis);
-        Date expiration = new Date(accessTime + currentMillis);
+        Date expirationDate = new Date(expiration + currentMillis);
 
         return Jwts
                 .builder()
                 .setClaims(claims)
                 .setSubject(user.getEmail())
                 .setIssuedAt(issueAt)
-                .setExpiration(expiration)
+                .setExpiration(expirationDate)
                 .signWith(key)
                 .compact();
+    }
+    public String generateAccessToken(UserEntity user){
+        return generateToken(user,environmentValues.getAccessTime());
     }
     public String generateRefreshToken(UserEntity user){
-        Map<String,Object> claims = new HashMap<>();
-
-        claims.put("id",user.getId());
-        claims.put("email",user.getEmail());
-        claims.put("role",user.getRole());
-
-        long currentMillis = System.currentTimeMillis();
-        Date issueAt = new Date(currentMillis);
-        Date expiration = new Date(refreshTime + currentMillis);
-
-        return Jwts
-                .builder()
-                .setClaims(claims)
-                .setSubject(user.getEmail())
-                .setIssuedAt(issueAt)
-                .setExpiration(expiration)
-                .signWith(key)
-                .compact();
+       return generateToken(user,environmentValues.getRefreshTime());
     }
 
     public Claims extractClaims(String token){

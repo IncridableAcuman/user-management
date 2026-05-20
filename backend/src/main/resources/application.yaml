@@ -67,3 +67,6 @@ jwt:
 file:
   upload:
     dir: ${UPLOAD_DIR}
+
+client:
+  url: ${CLIENT}
