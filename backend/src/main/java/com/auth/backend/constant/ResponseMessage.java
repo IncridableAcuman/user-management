@@ -24,5 +24,6 @@ public final class ResponseMessage {
     public static final String CONFIRM_PASSWORD_REQUIRED_LENGTH="confirm password must be between 8 and 50 characters long";
     public static final String EXIST_USER="user already exist";
     public static final String MISMATCH_PASSWORD="password is mismatch";
+    public static final String VERIFIED_USER="User already verified";
 
 }

@@ -31,7 +31,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final EnvironmentValues environmentValues;
 
-    public AuthResponse register(RegisterRequest request, HttpServletResponse response){
+    public void register(RegisterRequest request, HttpServletResponse response){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
             throw new CustomBadRequestException(ResponseMessage.EXIST_USER);
         }
@@ -45,14 +45,10 @@ public class AuthService {
         user.setGender(request.getGender());
         saveUser(user);
 
-        String accessToken = jwtUtil.generateAccessToken(user);
-        String refreshToken = jwtUtil.generateRefreshToken(user);
-
-        tokenService.saveToken(user,refreshToken);
-
-        cookieUtil.addCookie(refreshToken,response);
-
-        return AuthResponse.from(accessToken);
+        String token = jwtUtil.generateAccessToken(user);
+        String url = environmentValues.getClientUrl() + "/verify-email?token="+token;
+        EmailPayload payload = new EmailPayload(user.getEmail(),"Verify Email",url);
+        rabbitMQProducer.sendMessageWithRabbitMQ(payload);
     }
     public AuthResponse login(LoginRequest request,HttpServletResponse response){
         UserEntity user = findUserByEmail(request.getEmail());
@@ -107,6 +103,18 @@ public class AuthService {
         UserEntity user = jwtUtil.extractUser(request.getToken());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         saveUser(user);
+    }
+
+    public void verifyEmail(String token){
+        UserEntity user = jwtUtil.extractUser(token);
+        if (user.isEnabled()){
+            throw new CustomBadRequestException(ResponseMessage.VERIFIED_USER);
+        }
+        if (!jwtUtil.validateToken(token, user.getEmail())){
+            throw new CustomBadRequestException(ResponseMessage.INVALID_TOKEN);
+        }
+        user.setEnabled(true);
+        userRepository.save(user);
     }
 
     public UserEntity findUserByEmail(String email){

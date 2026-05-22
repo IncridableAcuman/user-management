@@ -17,8 +17,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(Endpoint.REGISTER)
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request, HttpServletResponse response){
-        return ResponseEntity.ok(authService.register(request,response));
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request, HttpServletResponse response){
+        authService.register(request,response);
+        return ResponseEntity.ok(ResponseMessage.SUCCESS);
     }
     @PostMapping(Endpoint.LOGIN)
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request,HttpServletResponse response){
