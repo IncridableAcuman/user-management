@@ -21,11 +21,9 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-
-    private Key key;
-
     private final UserRepository userRepository;
     private final EnvironmentValues environmentValues;
+    private Key key;
 
 
     @PostConstruct

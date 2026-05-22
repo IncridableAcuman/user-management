@@ -52,6 +52,9 @@ public class AuthService {
     }
     public AuthResponse login(LoginRequest request,HttpServletResponse response){
         UserEntity user = findUserByEmail(request.getEmail());
+        if (!user.isEnabled()){
+            throw new CustomBadRequestException(ResponseMessage.NOT_VERIFIED);
+        }
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new CustomBadRequestException(ResponseMessage.MISMATCH_PASSWORD);
         }
