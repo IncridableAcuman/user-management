@@ -17,5 +17,6 @@ public final class EnvironmentValues {
     private String clientUrl;
     @Value("${file.upload.dir}")
     public String uploadDir;
-
+    @Value("${otp.time}")
+    private int otpTime;
 }

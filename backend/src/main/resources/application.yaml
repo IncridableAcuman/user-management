@@ -64,6 +64,9 @@ jwt:
   access_time: ${JWT_ACCESS_TIME}
   refresh_time: ${JWT_REFRESH_TIME}
 
+otp:
+  time: ${OTP_TIME}
+
 file:
   upload:
     dir: ${UPLOAD_DIR}

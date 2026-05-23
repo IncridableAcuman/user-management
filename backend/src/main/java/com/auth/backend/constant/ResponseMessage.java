@@ -26,4 +26,6 @@ public final class ResponseMessage {
     public static final String MISMATCH_PASSWORD="password is mismatch";
     public static final String VERIFIED_USER="already verified";
     public static final String NOT_VERIFIED="Not verified";
+    public static final String INVALID_OTP = "invalid otp";
+    public static final String NULL_EMAIL="email is null";
 }

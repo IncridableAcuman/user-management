@@ -32,8 +32,9 @@ public class AuthService {
     private final RabbitMQProducer rabbitMQProducer;
     private final TokenService tokenService;
     private final EnvironmentValues environmentValues;
+    private final RedisService redisService;
 
-    public void register(RegisterRequest request ){
+    public void register(RegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
             throw new CustomBadRequestException(ResponseMessage.EXIST_USER);
         }
@@ -47,10 +48,8 @@ public class AuthService {
         user.setGender(request.getGender());
         saveUser(user);
 
-        String token = jwtUtil.generateAccessToken(user);
-        String url = environmentValues.getClientUrl() + "/verify-email?token="+token;
-        EmailPayload payload = new EmailPayload(user.getEmail(),"Verify Email",url);
-        rabbitMQProducer.sendMessageWithRabbitMQ(payload);
+        sendOTP(user.getEmail());
+
     }
     public AuthResponse login(LoginRequest request,HttpServletResponse response){
         UserEntity user = findUserByEmail(request.getEmail());
@@ -110,25 +109,24 @@ public class AuthService {
         saveUser(user);
     }
 
-    public void verifyEmail(String token){
-        UserEntity user = jwtUtil.extractUser(token);
-        if (user.isEnabled()){
-            throw new CustomBadRequestException(ResponseMessage.VERIFIED_USER);
+    public void verifyEmail(String email,String otp){
+        String cacheOTP = redisService.getOTP(email);
+        if (cacheOTP == null || !cacheOTP.equals(otp)){
+            throw new CustomBadRequestException(ResponseMessage.INVALID_OTP);
         }
-        if (!jwtUtil.validateToken(token, user.getEmail())){
-            throw new CustomBadRequestException(ResponseMessage.INVALID_TOKEN);
-        }
+        UserEntity user = findUserByEmail(email);
         user.setEnabled(true);
-        userRepository.save(user);
+        saveUser(user);
     }
-    public void sendOTP(Long id){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+
+    public void sendOTP(String email){
+        UserEntity user = findUserByEmail(email);
 
         SecureRandom random = new SecureRandom();
         int otp = 100000 + random.nextInt(900000);
-
-        EmailPayload payload = new EmailPayload(user.getEmail(), "OTP",String.valueOf(otp));
-
+        String stringOPTValue = String.valueOf(otp);
+        redisService.saveOTP(user.getEmail(), stringOPTValue);
+        EmailPayload payload = new EmailPayload(user.getEmail(),"Check this OTP",stringOPTValue);
         rabbitMQProducer.sendMessageWithRabbitMQ(payload);
     }
 
