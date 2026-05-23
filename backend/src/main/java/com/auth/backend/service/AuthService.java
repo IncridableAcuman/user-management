@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final EnvironmentValues environmentValues;
 
-    public void register(RegisterRequest request, HttpServletResponse response){
+    public void register(RegisterRequest request ){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
             throw new CustomBadRequestException(ResponseMessage.EXIST_USER);
         }
@@ -118,6 +120,16 @@ public class AuthService {
         }
         user.setEnabled(true);
         userRepository.save(user);
+    }
+    public void sendOTP(Long id){
+        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+
+        SecureRandom random = new SecureRandom();
+        int otp = 100000 + random.nextInt(900000);
+
+        EmailPayload payload = new EmailPayload(user.getEmail(), "OTP",String.valueOf(otp));
+
+        rabbitMQProducer.sendMessageWithRabbitMQ(payload);
     }
 
     public UserEntity findUserByEmail(String email){

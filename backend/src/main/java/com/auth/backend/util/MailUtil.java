@@ -24,6 +24,9 @@ public class MailUtil {
             helper.setTo(payload.to());
             helper.setSubject(payload.subject());
             helper.setText(payload.text(),true);
+
+            mailSender.send(message);
+
         } catch (MessagingException exception){
             throw new CustomInternalServerErrorException(exception.getMessage());
         }

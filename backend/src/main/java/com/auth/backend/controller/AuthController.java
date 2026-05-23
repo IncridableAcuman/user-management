@@ -17,8 +17,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(Endpoint.REGISTER)
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request, HttpServletResponse response){
-        authService.register(request,response);
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request){
+        authService.register(request);
         return ResponseEntity.ok(ResponseMessage.SUCCESS);
     }
     @PostMapping(Endpoint.LOGIN)
@@ -42,6 +42,11 @@ public class AuthController {
     @PatchMapping(Endpoint.RESET_PASSWORD)
     public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordRequest request){
         authService.resetPassword(request);
+        return ResponseEntity.ok(ResponseMessage.SUCCESS);
+    }
+    @GetMapping(Endpoint.VERIFY_EMAIL)
+    public ResponseEntity<String> verifyEmail(@RequestParam String token){
+        authService.verifyEmail(token);
         return ResponseEntity.ok(ResponseMessage.SUCCESS);
     }
 }
