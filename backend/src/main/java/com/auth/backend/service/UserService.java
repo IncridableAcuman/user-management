@@ -30,7 +30,7 @@ public class UserService {
 
     @Transactional
     public void removeUser(Long id){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+        UserEntity user = getUserById(id);
         userRepository.delete(user);
     }
 
@@ -42,9 +42,8 @@ public class UserService {
                 .map(UserResponse::from).toList();
     }
 
-    public UserResponse getUserById(Long id){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
-        return UserResponse.from(user);
+    public UserEntity getUserById(Long id){
+        return userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
     }
 
     @Transactional
@@ -52,5 +51,10 @@ public class UserService {
         UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
         user.setAvatar(fileService.saveFile(uploadAvatar.getAvatar()));
         userRepository.save(user);
+    }
+    @Transactional
+    public UserResponse editUser(Long id){
+        UserEntity user = getUserById(id);
+        return UserResponse.from(user);
     }
 }
