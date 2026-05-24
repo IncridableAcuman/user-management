@@ -1,9 +1,10 @@
 import {Routes,Route} from "react-router-dom";
-import DashboardPage from "@/pages/dashboard/ui/dashboard-page.tsx";
+import {DashboardPage} from "@/pages/dashboard/ui/dashboard-page.tsx";
 import {LoginPage} from "@/pages/login/ui/login-page";
-import RegisterPage from "@/pages/register/ui/register-page";
-import ResetPasswordPage from "@/pages/reset-password/ui/reset-password-page";
-import ForgotPasswordPage from "@/pages/forgot-password/ui/forgot-password-page";
+import {RegisterPage} from "@/pages/register/ui/register-page";
+import {ResetPasswordPage} from "@/pages/reset-password/ui/reset-password-page";
+import {ForgotPasswordPage} from "@/pages/forgot-password/ui/forgot-password-page";
+import { VerifyOTPPage } from "@/pages/verify-otp";
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
                <Route path="/register" element={<RegisterPage/>} />
                <Route path="/reset-password" element={<ResetPasswordPage/>} />
                <Route path="/forgot-password" element={<ForgotPasswordPage/>} />
+               <Route path="/verify-otp" element={<VerifyOTPPage/>} />
            </Routes>
         </>
     )
