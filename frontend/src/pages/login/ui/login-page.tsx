@@ -1,8 +1,7 @@
-const LoginPage = () => {
+import { LoginForm } from "@/features/auth-login"
+
+export const LoginPage = () => {
     return (
-        <div>
-            <h1>Login Page</h1>
-        </div>
+        <LoginForm/>
     )
 }
-export default LoginPage;

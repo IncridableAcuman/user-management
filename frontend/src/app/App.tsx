@@ -1,6 +1,6 @@
 import {Routes,Route} from "react-router-dom";
 import DashboardPage from "@/pages/dashboard/ui/dashboard-page.tsx";
-import LoginPage from "@/pages/login/ui/login-page";
+import {LoginPage} from "@/pages/login/ui/login-page";
 import RegisterPage from "@/pages/register/ui/register-page";
 import ResetPasswordPage from "@/pages/reset-password/ui/reset-password-page";
 import ForgotPasswordPage from "@/pages/forgot-password/ui/forgot-password-page";
