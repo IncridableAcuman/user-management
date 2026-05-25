@@ -1,6 +1,5 @@
 package com.auth.backend.dto.user;
 
-import com.auth.backend.entity.UserEntity;
 import com.auth.backend.entity.enums.Gender;
 import com.auth.backend.entity.enums.UserRole;
 
@@ -24,22 +23,4 @@ public record UserResponse(
         LocalDateTime updatedAt
 
 ) {
-    public static UserResponse from(UserEntity user){
-        return new UserResponse(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getRole(),
-                user.getGender(),
-                user.getPhone(),
-                user.isEnabled(),
-                user.getAvatar(),
-                user.getBirthDate(),
-                user.getBio(),
-                user.getCreatedAt(),
-                user.getUpdatedAt()
-        );
-    }
 }

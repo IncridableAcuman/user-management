@@ -8,6 +8,7 @@ import com.auth.backend.entity.enums.UserRole;
 import com.auth.backend.exception.CustomBadRequestException;
 import com.auth.backend.exception.CustomNotFoundException;
 import com.auth.backend.exception.CustomUnauthorizedException;
+import com.auth.backend.mapper.AuthMapper;
 import com.auth.backend.producer.RabbitMQProducer;
 import com.auth.backend.repository.UserRepository;
 import com.auth.backend.util.CookieUtil;
@@ -33,6 +34,7 @@ public class AuthService {
     private final TokenService tokenService;
     private final EnvironmentValues environmentValues;
     private final RedisService redisService;
+    private final AuthMapper authMapper;
 
     public void register(RegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -66,7 +68,7 @@ public class AuthService {
 
         cookieUtil.addCookie(refreshToken,response);
 
-        return AuthResponse.from(accessToken);
+        return authMapper.toDto(accessToken);
     }
     public AuthResponse refresh(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);
@@ -79,7 +81,7 @@ public class AuthService {
         tokenService.saveToken(user,newRefreshToken);
         cookieUtil.addCookie(newRefreshToken,response);
 
-        return AuthResponse.from(newAccessToken);
+        return authMapper.toDto(newAccessToken);
     }
     public void logout(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);

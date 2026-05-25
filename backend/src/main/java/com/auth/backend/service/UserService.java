@@ -5,6 +5,7 @@ import com.auth.backend.dto.auth.UploadAvatar;
 import com.auth.backend.dto.user.UserResponse;
 import com.auth.backend.entity.UserEntity;
 import com.auth.backend.exception.CustomNotFoundException;
+import com.auth.backend.mapper.UserMapper;
 import com.auth.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -19,13 +20,15 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final FileService fileService;
+    private final UserMapper userMapper;
 
     public UserResponse getMe(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         assert authentication != null;
         UserEntity user = (UserEntity) authentication.getPrincipal();
         assert user != null;
-        return UserResponse.from(user);
+
+        return  userMapper.toDto(user);
     }
 
     @Transactional
@@ -39,7 +42,7 @@ public class UserService {
         List<UserEntity> list = userRepository.findAll();
         return list
                 .stream()
-                .map(UserResponse::from).toList();
+                .map(userMapper::toDto).toList();
     }
 
     public UserEntity getUserById(Long id){
@@ -55,6 +58,6 @@ public class UserService {
     @Transactional
     public UserResponse editUser(Long id){
         UserEntity user = getUserById(id);
-        return UserResponse.from(user);
+        return userMapper.toDto(user);
     }
 }

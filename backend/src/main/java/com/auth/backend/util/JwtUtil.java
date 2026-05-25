@@ -7,6 +7,7 @@ import com.auth.backend.exception.CustomNotFoundException;
 import com.auth.backend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -44,11 +45,11 @@ public class JwtUtil {
 
         return Jwts
                 .builder()
-                .setClaims(claims)
+                .addClaims(claims)
                 .setSubject(user.getEmail())
                 .setIssuedAt(issueAt)
                 .setExpiration(expirationDate)
-                .signWith(key)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
     public String generateAccessToken(UserEntity user){
