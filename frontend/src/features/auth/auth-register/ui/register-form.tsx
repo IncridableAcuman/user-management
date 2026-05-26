@@ -8,80 +8,71 @@ import {
 } from "@/shared/ui/card";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/shared/ui/radio-group";
-import { Code } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const RegisterForm = () => {
+  const navigate = useNavigate();
   return (
-    <div className="w-full min-h-screen pt-24">
-      <div className="w-full flex flex-col items-center justify-center gap-3">
-        <div className="">
-          <Button><Code size={45}  /></Button>
+    <div className="w-full min-h-screen flex items-center justify-between font-semibold">
+      <div className="hidden sm:block w-full min-h-screen bg-gray-950 text-white">
+        <h2 className="cursor-pointer p-6 text-lg font-semibold">
+          Andy<span className="text-pink-700 font-bold">Stack</span>
+        </h2>
+      </div>
+      <div className="w-full bg-black text-white min-h-screen">
+        <div className="flex items-center justify-end p-6">
+          <Button variant={"destructive"} onClick={()=> navigate("/login")} className="cursor-pointer">
+            Login
+          </Button>
         </div>
-        <div className="w-full max-w-xl">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">Register</CardTitle>
+
+        <div className="flex flex-col items-center justify-center pt-30">
+          <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl font-semibold">
+                Create an account
+              </CardTitle>
               <CardDescription>
-                To register, please complete the following:
+                Enter your email below to create your account
               </CardDescription>
             </CardHeader>
             <CardContent className="w-full">
               <form>
-                <div className="flex flex-col gap-6">
-                  {/* for firstname and lastname */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="grid gap-2">
-                      <Label htmlFor="firstName">Firstname</Label>
-                      <Input
-                        type="text"
-                        id="firstName"
-                        placeholder="Firstname"
-                        required
-                      />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="lastName">Lastname</Label>
-                      <Input
-                        type="text"
-                        id="lastName"
-                        placeholder="Lastname"
-                        required
-                      />
-                    </div>
-                  </div>
-                  {/* for username */}
-                  <div className="grid gap-2">
+                <div className="flex flex-col gap-6 font-semibold">
+                  <div className="grid gap-3">
                     <Label htmlFor="username">Username</Label>
                     <Input
                       type="text"
                       id="username"
-                      placeholder="Username"
+                      placeholder="Acuman"
+                      className="p-5"
                       required
                     />
                   </div>
-                  {/* for email */}
-                  <div className="grid gap-2">
+                  <div className="grid gap-3">
                     <Label htmlFor="email">Email</Label>
                     <Input
                       type="email"
                       id="email"
-                      placeholder="Enter your email"
+                      placeholder="example@gmail.com"
+                      className="p-5"
                       required
                     />
                   </div>
-                  {/* for password */}
-                  <div className="grid gap-2">
+                  <div className="grid gap-3">
                     <Label htmlFor="password">Password</Label>
                     <Input
                       type="password"
                       id="password"
-                      placeholder="Enter your password"
+                      placeholder="********"
+                      className="p-5"
                       required
                     />
                   </div>
-                  <div className="grid gap-2">
-                    <Button>Register Now</Button>
+                  <div className="grid gap-3">
+                    <Button variant={"outline"} className="text-black p-5 cursor-pointer">
+                      Create an account
+                    </Button>
                   </div>
                 </div>
               </form>
