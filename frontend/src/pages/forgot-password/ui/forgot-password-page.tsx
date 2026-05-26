@@ -1,7 +1,7 @@
+import { ForgotPasswordForm } from "@/features/auth/auth-forgot-password"
+
 export const ForgotPasswordPage = () => {
     return (
-        <div>
-            <h1>Forgot Password Page</h1>
-        </div>
+        <ForgotPasswordForm/>
     )
 }
