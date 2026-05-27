@@ -1,7 +1,9 @@
+import { Navbar } from "@/widgets/navbar"
+
 export const DashboardPage = () => {
     return (
-        <div>
-            <h1>Dashboard</h1>
+        <div className="min-h-screen w-full bg-black text-white">
+           <Navbar/>
         </div>
     )
 }
