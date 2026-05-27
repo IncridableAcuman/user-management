@@ -7,7 +7,7 @@ import { RefreshCcwIcon } from "lucide-react"
 export const VerifyOTPForm = () => {
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
-      <Card className="w-full max-w-96">
+      <Card className="w-full max-w-96 bg-black text-white">
         <CardHeader>
           <CardTitle>Verify your login</CardTitle>
           <CardDescription>Enter the verification code we sent to your email address: m@example.com.</CardDescription>
@@ -16,7 +16,7 @@ export const VerifyOTPForm = () => {
           <Field>
             <div className="flex items-center justify-between">
               <FieldLabel htmlFor="otp-verification">Verification code</FieldLabel>
-              <Button variant={"outline"} size={"xs"}>
+              <Button variant={"outline"} size={"xs"} className="text-black">
                 <RefreshCcwIcon/>
                 Resend code
               </Button>
@@ -33,8 +33,8 @@ export const VerifyOTPForm = () => {
             </InputOTP>
           </Field>
         </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full p-5">Verify</Button>
+        <CardFooter className="bg-black text-white">
+          <Button type="submit" variant={'secondary'} className="w-full p-5 shadow-lg cursor-pointer">Verify</Button>
         </CardFooter>
       </Card>
     </div>
