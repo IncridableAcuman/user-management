@@ -8,29 +8,11 @@ import {
 } from "@/shared/ui/card";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
   return (
-    <div className="w-full min-h-screen flex items-center justify-between font-semibold">
-      <div className="hidden sm:block w-full min-h-screen bg-gray-950 text-white">
-        <h2 className="cursor-pointer p-6 text-lg font-semibold">
-          Andy<span className="text-pink-700 font-bold">Stack</span>
-        </h2>
-      </div>
-      <div className="w-full bg-black text-white min-h-screen">
-        <div className="flex items-center justify-end p-6">
-          <Button
-            variant={"destructive"}
-            onClick={() => navigate("/register")}
-            className="cursor-pointer"
-          >
-            Register
-          </Button>
-        </div>
 
-        <div className="flex flex-col items-center justify-center pt-30">
           <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl font-semibold">
@@ -78,8 +60,5 @@ export const LoginForm = () => {
               </form>
             </CardContent>
           </Card>
-        </div>
-      </div>
-    </div>
   );
 };

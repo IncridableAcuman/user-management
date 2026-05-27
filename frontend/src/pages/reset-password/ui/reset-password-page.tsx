@@ -1,7 +1,7 @@
+import { ResetPasswordForm } from "@/features/auth/auth-reset-password"
+
 export const ResetPasswordPage = () => {
     return (
-        <div>
-            <h1>Reset Password</h1>
-        </div>
+        <ResetPasswordForm/>
     )
 }
