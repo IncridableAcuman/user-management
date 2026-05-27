@@ -15,7 +15,7 @@ export const ForgotPasswordForm = () => {
       </div>
       <div className="w-full bg-black text-white min-h-screen">
         <div className="flex items-center justify-end p-6">
-          <Button variant={"destructive"} onClick={()=> navigate("/login")} className="cursor-pointer">
+          <Button variant={"destructive"} onClick={()=> navigate("/auth")} className="cursor-pointer">
             Login
           </Button>
         </div>
