@@ -8,7 +8,7 @@ export const ResetPasswordForm = () => {
     <div className="w-full min-h-screen flex items-center justify-between font-semibold">
       <div className="hidden sm:block w-full min-h-screen bg-gray-950 text-white">
         <h2 className="cursor-pointer p-6 text-lg font-semibold">
-          Andy<span className="text-pink-700 font-bold">Stack</span>
+          Andy<span className="text-blue-500 font-bold">Stack</span>
         </h2>
       </div>
       <div className="w-full bg-black text-white min-h-screen">
@@ -16,7 +16,7 @@ export const ResetPasswordForm = () => {
         <div className="flex flex-col items-center justify-center pt-30">
           <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-semibold">
+              <CardTitle className="text-2xl font-semibold text-blue-500">
                 Reset Password
               </CardTitle>
               <CardDescription>
@@ -32,7 +32,7 @@ export const ResetPasswordForm = () => {
                       type="password"
                       id="password"
                       placeholder="********"
-                      className="p-5"
+                      className="p-5 border border-blue-500"
                       required
                     />
                   </div>
@@ -42,14 +42,14 @@ export const ResetPasswordForm = () => {
                       type="password"
                       id="confirmPassword"
                       placeholder="********"
-                      className="p-5"
+                      className="p-5 border border-blue-500"
                       required
                     />
                   </div>
                   <div className="grid gap-3">
                     <Button
                       variant={"outline"}
-                      className="text-black p-5 cursor-pointer"
+                      className="text-black p-5 cursor-pointer border border-blue-500"
                     >
                       Reset Password
                     </Button>

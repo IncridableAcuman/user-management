@@ -9,10 +9,11 @@ export const AuthPage = () => {
     <div className="w-full min-h-screen flex font-semibold">
       <div className="hidden sm:block w-1/2 min-h-screen bg-gray-950 text-white">
         <h2 className="cursor-pointer p-6 text-lg font-semibold">
-          Andy<span className="text-pink-700 font-bold">Stack</span>
+          Andy<span className="text-blue-700 font-bold">Stack</span>
         </h2>
       </div>
-      <div className="w-full md:w-1/2 bg-black text-white min-h-screen flex items-center justify-center p-6">
+      <div className="w-full md:w-1/2 bg-black text-white min-h-screen flex flex-col items-center justify-center p-6">
+          <img src="favicon.svg" alt="icons" className="py-6" />
         <Tabs
           value={active}
           onValueChange={setActive}
@@ -22,13 +23,13 @@ export const AuthPage = () => {
           <TabsList className="grid w-full grid-cols-2 p-1 md:p-2">
             <TabsTrigger
               value="login"
-              className={active === "login" ? "bg-gray-900 text-white" : ""}
+              className={active === "login" ? "bg-blue-900 text-white" : ""}
             >
               Login
             </TabsTrigger>
             <TabsTrigger
               value="register"
-              className={active === "register" ? "bg-gray-900 text-white" : ""}
+              className={active === "register" ? "bg-blue-900 text-white" : ""}
             >
               Register
             </TabsTrigger>

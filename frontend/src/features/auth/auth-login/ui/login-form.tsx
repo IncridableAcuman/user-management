@@ -15,7 +15,7 @@ export const LoginForm = () => {
 
           <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-semibold">
+              <CardTitle className="text-2xl font-semibold text-blue-500">
                 Login to your account
               </CardTitle>
               <CardDescription>
@@ -31,7 +31,7 @@ export const LoginForm = () => {
                       type="email"
                       id="email"
                       placeholder="example@gmail.com"
-                      className="p-5"
+                      className="p-5 border border-blue-500"
                       required
                     />
                   </div>
@@ -41,20 +41,21 @@ export const LoginForm = () => {
                       type="password"
                       id="password"
                       placeholder="********"
-                      className="p-5"
+                      className="p-5 border border-blue-500"
                       required
                     />
                   </div>
                   <div className="grid gap-3">
                     <Button
                       variant={"outline"}
-                      className="text-black p-5 cursor-pointer"
+                      className="text-black p-5 cursor-pointer border border-blue-500"
                     >
                       Login
                     </Button>
                   </div>
                 </div>
-                <Link to={"/forgot-password"} className="text-xs flex items-center justify-center pt-10 underline">
+                <Link to={"/forgot-password"} className="text-xs flex items-center justify-center pt-10 underline text-blue-500 hover:text-white
+                 transition duration-300">
                   Forgot Password
                 </Link>
               </form>

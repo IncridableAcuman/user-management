@@ -41,13 +41,10 @@ public class AuthService {
             throw new CustomBadRequestException(ResponseMessage.EXIST_USER);
         }
         UserEntity user = new UserEntity();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(UserRole.USER);
-        user.setGender(request.getGender());
         saveUser(user);
 
         sendOTP(user.getEmail());
