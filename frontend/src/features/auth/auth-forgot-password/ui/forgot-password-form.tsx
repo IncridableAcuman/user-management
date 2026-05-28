@@ -23,7 +23,7 @@ export const ForgotPasswordForm = () => {
         <div className="flex flex-col items-center justify-center pt-30">
           <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-semibold">
+              <CardTitle className="text-2xl font-semibold text-blue-500">
                 Forgot Password?
               </CardTitle>
               <CardDescription>
@@ -40,12 +40,12 @@ export const ForgotPasswordForm = () => {
                       type="email"
                       id="email"
                       placeholder="example@gmail.com"
-                      className="p-5"
+                      className="p-5 border border-blue-500"
                       required
                     />
                   </div>
                   <div className="grid gap-3">
-                    <Button variant={"outline"} className="text-black p-5 cursor-pointer">
+                    <Button variant={"outline"} className="text-black p-5 cursor-pointer border border-blue-500">
                       Send link
                     </Button>
                   </div>
