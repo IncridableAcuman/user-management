@@ -21,6 +21,7 @@ public final class ResponseMessage {
     public static final String LAST_NAME_REQUIRED_LENGTH="lastname must be between 3 and 50 characters long";
     public static final String USER_NAME_REQUIRED_LENGTH="username must be between 3 and 50 characters long";
     public static final String PASSWORD_REQUIRED_LENGTH="password must be between 8 and 50 characters long";
+    public static final String BIO_MAX_LENGTH="bio must be less than 500 characters";
     public static final String CONFIRM_PASSWORD_REQUIRED_LENGTH="confirm password must be between 8 and 50 characters long";
     public static final String EXIST_USER="user already exist";
     public static final String MISMATCH_PASSWORD="password is mismatch";

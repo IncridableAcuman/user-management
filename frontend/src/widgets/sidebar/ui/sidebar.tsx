@@ -1,5 +1,5 @@
 
-export const sidebar = () => {
+export const WidgetSidebar = () => {
   return (
     <div>sidebar</div>
   )

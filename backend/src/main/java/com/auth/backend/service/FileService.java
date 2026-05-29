@@ -1,6 +1,7 @@
 package com.auth.backend.service;
 
 import com.auth.backend.constant.EnvironmentValues;
+import com.auth.backend.dto.auth.UploadAvatar;
 import com.auth.backend.exception.CustomInternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,14 @@ public class FileService {
             Path path = uploadPath.resolve(fileName);
             Files.copy(file.getInputStream(),path, StandardCopyOption.REPLACE_EXISTING);
             return fileName;
+        } catch (IOException exception){
+            throw new CustomInternalServerErrorException(exception.getMessage());
+        }
+    }
+    public void removeFile(String avatar){
+        try {
+            Path filePath = Paths.get(environmentValues.uploadDir,avatar);
+            Files.deleteIfExists(filePath);
         } catch (IOException exception){
             throw new CustomInternalServerErrorException(exception.getMessage());
         }
