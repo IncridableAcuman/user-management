@@ -2,7 +2,7 @@ package com.auth.backend.controller;
 
 import com.auth.backend.constant.Endpoint;
 import com.auth.backend.constant.ResponseMessage;
-import com.auth.backend.dto.auth.UploadAvatar;
+import com.auth.backend.dto.user.EditUserRequest;
 import com.auth.backend.dto.user.UserResponse;
 import com.auth.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +30,9 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> getList(){
         return ResponseEntity.ok(userService.getList());
     }
-    @PatchMapping("/${id}/avatar")
-    public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @ModelAttribute UploadAvatar avatar){
-        userService.uploadAvatar(id,avatar);
-        return ResponseEntity.ok(ResponseMessage.SUCCESS);
+
+    @PatchMapping("/{id}/edit")
+    public ResponseEntity<UserResponse> editUser(@PathVariable Long id, @RequestBody EditUserRequest request){
+        return ResponseEntity.ok(userService.editUser(id,request));
     }
 }

@@ -1,7 +1,7 @@
 package com.auth.backend.service;
 
 import com.auth.backend.constant.ResponseMessage;
-import com.auth.backend.dto.auth.UploadAvatar;
+import com.auth.backend.dto.user.EditUserRequest;
 import com.auth.backend.dto.user.UserResponse;
 import com.auth.backend.entity.UserEntity;
 import com.auth.backend.exception.CustomNotFoundException;
@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final FileService fileService;
     private final UserMapper userMapper;
 
     public UserResponse getMe(){
@@ -50,14 +49,16 @@ public class UserService {
     }
 
     @Transactional
-    public void uploadAvatar(Long id,UploadAvatar uploadAvatar){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
-        user.setAvatar(fileService.saveFile(uploadAvatar.getAvatar()));
-        userRepository.save(user);
-    }
-    @Transactional
-    public UserResponse editUser(Long id){
+    public UserResponse editUser(Long id, EditUserRequest request){
         UserEntity user = getUserById(id);
-        return userMapper.toDto(user);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setUsername(request.getUsername());
+        user.setGender(request.getGender());
+        user.setBirthDate(request.getBirthDate());
+        user.setBio(request.getBio());
+        user.setPhone(request.getPhone());
+        UserEntity saved = userRepository.save(user);
+        return userMapper.toDto(saved);
     }
 }
