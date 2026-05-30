@@ -1,7 +1,6 @@
 package com.auth.backend.service;
 
 import com.auth.backend.constant.EnvironmentValues;
-import com.auth.backend.dto.auth.UploadAvatar;
 import com.auth.backend.exception.CustomInternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
