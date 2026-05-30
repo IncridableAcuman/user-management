@@ -8,7 +8,6 @@ import com.auth.backend.entity.enums.UserRole;
 import com.auth.backend.exception.CustomBadRequestException;
 import com.auth.backend.exception.CustomNotFoundException;
 import com.auth.backend.exception.CustomUnauthorizedException;
-import com.auth.backend.mapper.AuthMapper;
 import com.auth.backend.producer.RabbitMQProducer;
 import com.auth.backend.repository.UserRepository;
 import com.auth.backend.util.CookieUtil;
@@ -34,7 +33,6 @@ public class AuthService {
     private final TokenService tokenService;
     private final EnvironmentValues environmentValues;
     private final RedisService redisService;
-    private final AuthMapper authMapper;
 
     public void register(RegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -47,7 +45,7 @@ public class AuthService {
         user.setRole(UserRole.USER);
         saveUser(user);
 
-        sendOTP(user.getEmail());
+        sendToMail(user);
 
     }
     public AuthResponse login(LoginRequest request,HttpServletResponse response){
@@ -65,7 +63,7 @@ public class AuthService {
 
         cookieUtil.addCookie(refreshToken,response);
 
-        return authMapper.toDto(accessToken);
+        return AuthResponse.from(accessToken);
     }
     public AuthResponse refresh(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);
@@ -78,7 +76,7 @@ public class AuthService {
         tokenService.saveToken(user,newRefreshToken);
         cookieUtil.addCookie(newRefreshToken,response);
 
-        return authMapper.toDto(newAccessToken);
+        return AuthResponse.from(newAccessToken);
     }
     public void logout(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);
@@ -108,12 +106,11 @@ public class AuthService {
         saveUser(user);
     }
 
-    public void verifyEmail(String email,String otp){
-        String cacheOTP = redisService.getOTP(email);
-        if (cacheOTP == null || !cacheOTP.equals(otp)){
-            throw new CustomBadRequestException(ResponseMessage.INVALID_OTP);
+    public void verifyEmail(String token){
+        UserEntity user = jwtUtil.extractUser(token);
+        if (!jwtUtil.validateToken(token,user.getEmail())){
+            throw new CustomBadRequestException(ResponseMessage.INVALID_TOKEN);
         }
-        UserEntity user = findUserByEmail(email);
         user.setEnabled(true);
         saveUser(user);
     }
@@ -132,6 +129,14 @@ public class AuthService {
     public UserEntity findUserByEmail(String email){
         return userRepository.findByEmail(email).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
     }
+
+    public  void sendToMail(UserEntity user){
+        String token = jwtUtil.generateAccessToken(user);
+        String url = environmentValues.getClientUrl() + "/verify-email?token="+token;
+        EmailPayload payload = new EmailPayload(user.getEmail(),"Verify Email",url);
+        rabbitMQProducer.sendMessageWithRabbitMQ(payload);
+    }
+
 
     @Transactional
     public void saveUser(UserEntity user){
