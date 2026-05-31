@@ -2,6 +2,8 @@ package com.auth.backend.service;
 
 import com.auth.backend.constant.ResponseMessage;
 import com.auth.backend.dto.auth.UploadAvatar;
+import com.auth.backend.dto.user.EditUserRequest;
+import com.auth.backend.dto.user.UserResponse;
 import com.auth.backend.entity.UserEntity;
 import com.auth.backend.exception.CustomNotFoundException;
 import com.auth.backend.repository.UserRepository;
@@ -27,5 +29,18 @@ public class UserProfileService {
         fileService.removeFile(user.getAvatar());
         user.setAvatar(null);
         userRepository.save(user);
+    }
+    @Transactional
+    public UserResponse editUser(Long id, EditUserRequest request){
+        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setUsername(request.getUsername());
+        user.setGender(request.getGender());
+        user.setBirthDate(request.getBirthDate());
+        user.setBio(request.getBio());
+        user.setPhone(request.getPhone());
+        UserEntity saved = userRepository.save(user);
+        return UserResponse.from(saved);
     }
 }
