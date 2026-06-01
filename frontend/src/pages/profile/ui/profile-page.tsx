@@ -4,9 +4,6 @@ import { Navbar } from "@/widgets/navbar";
 import { Settings } from "lucide-react";
 import { useState } from "react";
 
-type ProfileActiveType={
-  active: "overview" | "projects" | "activities" | "members"
-}
 
 export const ProfilePage = () => {
   const [active,setActive]=useState("overview")
