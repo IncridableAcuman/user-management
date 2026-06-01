@@ -5,6 +5,7 @@ import { VerifyOTPPage } from "@/pages/verify-otp";
 import { AuthPage } from "@/pages/auth";
 import { DashboardPage } from "@/pages/dashboard";
 import { ProfilePage } from "@/pages/profile";
+import { SettingsPage } from "@/pages/settings";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/" element={<DashboardPage />} />
         <Route path="/profile" element={<ProfilePage/>} />
+        <Route path="/settings" element={<SettingsPage/>} />
       </Routes>
     </>
   );
