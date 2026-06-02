@@ -13,7 +13,7 @@ export const RegisterForm = () => {
   return (
           <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-semibold text-blue-500">
+              <CardTitle className="text-2xl font-semibold">
                 Create an account
               </CardTitle>
               <CardDescription>
@@ -29,7 +29,7 @@ export const RegisterForm = () => {
                       type="text"
                       id="username"
                       placeholder="Acuman"
-                      className="p-5 border border-blue-500"
+                      className="p-5"
                       required
                     />
                   </div>
@@ -39,7 +39,7 @@ export const RegisterForm = () => {
                       type="email"
                       id="email"
                       placeholder="example@gmail.com"
-                      className="p-5 border border-blue-500"
+                      className="p-5"
                       required
                     />
                   </div>
@@ -49,12 +49,12 @@ export const RegisterForm = () => {
                       type="password"
                       id="password"
                       placeholder="********"
-                      className="p-5 border border-blue-500"
+                      className="p-5"
                       required
                     />
                   </div>
                   <div className="grid gap-3">
-                    <Button variant={"outline"} className="text-black p-5 cursor-pointer border border-blue-500">
+                    <Button className="text-black p-5 cursor-pointer">
                       Create an account
                     </Button>
                   </div>

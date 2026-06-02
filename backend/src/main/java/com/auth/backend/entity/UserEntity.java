@@ -63,6 +63,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "bio",length = 500)
     private String bio;
 
+    @Column(name = "country")
+    private String country;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

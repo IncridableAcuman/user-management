@@ -45,7 +45,7 @@ export const ForgotPasswordForm = () => {
                     />
                   </div>
                   <div className="grid gap-3">
-                    <Button variant={"outline"} className="text-black p-5 cursor-pointer border border-blue-500">
+                    <Button  className="p-5 cursor-pointer">
                       Send link
                     </Button>
                   </div>
