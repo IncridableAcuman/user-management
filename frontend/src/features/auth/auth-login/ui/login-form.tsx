@@ -8,14 +8,18 @@ import {
 } from "@/shared/ui/card";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const LoginForm = () => {
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
+
   return (
 
           <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-semibold text-blue-500">
+              <CardTitle className="text-2xl font-semibold">
                 Login to your account
               </CardTitle>
               <CardDescription>
@@ -30,8 +34,10 @@ export const LoginForm = () => {
                     <Input
                       type="email"
                       id="email"
+                      value={email}
+                      onChange={(e)=>setEmail(e.target.value)}
                       placeholder="example@gmail.com"
-                      className="p-5 border border-blue-500"
+                      className="p-5"
                       required
                     />
                   </div>
@@ -40,15 +46,16 @@ export const LoginForm = () => {
                     <Input
                       type="password"
                       id="password"
+                      value={password}
+                      onChange={(e)=>setPassword(e.target.value)}
                       placeholder="********"
-                      className="p-5 border border-blue-500"
+                      className="p-5"
                       required
                     />
                   </div>
                   <div className="grid gap-3">
                     <Button
-                      variant={"outline"}
-                      className="text-black p-5 cursor-pointer border border-blue-500"
+                      className="text-black p-5 cursor-pointer"
                     >
                       Login
                     </Button>
