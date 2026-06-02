@@ -57,7 +57,7 @@ export const DashboardPage = () => {
           {fourCard.map((card, index) => (
             <Card
               key={index}
-              className={`${theme === "dark" ? "border border-fuchsia-950 transition duration-300" : ""}`}
+              className={`${theme === "dark" ? "border border-fuchsia-950 hover:bg-neutral-950 hover:border-gray-900 transition duration-300" : ""}`}
             >
               <CardHeader className="flex items-center gap-3">
                 <button

@@ -3,17 +3,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { Navbar } from "@/widgets/navbar";
 import { Settings } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 export const ProfilePage = () => {
   const [active,setActive]=useState("overview")
+  const navigate = useNavigate();
+
   return (
     <div className={`w-full min-h-screen`}>
       <Navbar />
       <div className="pt-24 px-4 sm:px-6 md:px-8 lg:px-10">
         <div className="flex items-center justify-between gap-3">
           <h1 className="text-lg font-semibold md:text-xl">Profile Page</h1>
-          <Button>
+          <Button onClick={()=> navigate("/settings")}>
             <Settings />
             Settings
           </Button>
