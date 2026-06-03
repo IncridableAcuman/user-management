@@ -8,13 +8,9 @@ import {
 } from "@/shared/ui/card";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const LoginForm = () => {
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
-
   return (
 
           <Card className="w-full max-w-xl mx-auto bg-transparent text-white">
@@ -34,8 +30,6 @@ export const LoginForm = () => {
                     <Input
                       type="email"
                       id="email"
-                      value={email}
-                      onChange={(e)=>setEmail(e.target.value)}
                       placeholder="example@gmail.com"
                       className="p-5"
                       required
@@ -46,8 +40,6 @@ export const LoginForm = () => {
                     <Input
                       type="password"
                       id="password"
-                      value={password}
-                      onChange={(e)=>setPassword(e.target.value)}
                       placeholder="********"
                       className="p-5"
                       required

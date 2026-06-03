@@ -66,6 +66,12 @@ public class UserEntity implements UserDetails {
     @Column(name = "country")
     private String country;
 
+    @Column(name = "skills")
+    private List<String> skills;
+
+    @Column(name = "social_links")
+    private List<String> socialLinks;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

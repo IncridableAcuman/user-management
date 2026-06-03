@@ -9,7 +9,16 @@ import {
   UserPlus,
   Users,
 } from "lucide-react";
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const fourCard = [
   {
@@ -57,7 +66,7 @@ export const DashboardPage = () => {
           {fourCard.map((card, index) => (
             <Card
               key={index}
-              className={`${theme === "dark" ? "border border-fuchsia-950 hover:bg-neutral-950 hover:border-gray-900 transition duration-300" : ""}`}
+              className={`${theme === "dark" ? "border border-fuchsia-950 bg-gray-950 hover:border-gray-900 transition duration-300" : ""}`}
             >
               <CardHeader className="flex items-center gap-3">
                 <button
@@ -76,7 +85,7 @@ export const DashboardPage = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 py-4">
           <Card
-            className={`${theme === "dark" ? "border border-fuchsia-950 transition duration-300" : ""}`}
+            className={`${theme === "dark" ? "border border-fuchsia-950 bg-gray-950 hover:border-gray-900  transition duration-300" : ""}`}
           >
             <CardHeader className="flex items-center gap-3">
               <CardTitle>User Registration Analytics</CardTitle>
@@ -114,7 +123,7 @@ export const DashboardPage = () => {
             </CardContent>
           </Card>
           <Card
-            className={`${theme === "dark" ? "border border-fuchsia-950 transition duration-300" : ""}`}
+            className={`${theme === "dark" ? "border border-fuchsia-950 bg-gray-950 hover:border-gray-900  transition duration-300" : ""}`}
           >
             <CardHeader className="flex items-center justify-between gap-3">
               <CardTitle className="text-lg md:text-xl font-semibold">
@@ -155,7 +164,7 @@ export const DashboardPage = () => {
         </div>
         {/* 3 */}
         <Card
-          className={`w-full p-4 ${theme === "dark" ? "border border-fuchsia-950" : ""}`}
+          className={`w-full p-4 ${theme === "dark" ? "border border-fuchsia-950 bg-gray-950 hover:border-gray-900 transition duration-300" : ""}`}
         >
           <CardHeader>
             <CardTitle className="text-balance md:text-lg lg:text-xl font-semibold">
@@ -163,35 +172,35 @@ export const DashboardPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-                          <ResponsiveContainer width="100%" height={350}>
-                <LineChart data={loginActivity}>
-                  <CartesianGrid strokeDasharray="3 3" />
+            <ResponsiveContainer width="100%" height={350}>
+              <LineChart data={loginActivity}>
+                <CartesianGrid strokeDasharray="3 3" />
 
-                  <XAxis dataKey="day" />
+                <XAxis dataKey="day" />
 
-                  <YAxis />
+                <YAxis />
 
-                  <Tooltip />
+                <Tooltip />
 
-                  <Legend />
+                <Legend />
 
-                  <Line
-                    type="monotone"
-                    dataKey="success"
-                    name="Successful Login"
-                    stroke="#22c55e"
-                    strokeWidth={3}
-                  />
+                <Line
+                  type="monotone"
+                  dataKey="success"
+                  name="Successful Login"
+                  stroke="#22c55e"
+                  strokeWidth={3}
+                />
 
-                  <Line
-                    type="monotone"
-                    dataKey="failed"
-                    name="Failed Login"
-                    stroke="#ef4444"
-                    strokeWidth={3}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+                <Line
+                  type="monotone"
+                  dataKey="failed"
+                  name="Failed Login"
+                  stroke="#ef4444"
+                  strokeWidth={3}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>

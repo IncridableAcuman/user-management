@@ -18,7 +18,7 @@ export const Navbar = () => {
       py-4 px-4 sm:px-6 md:px-8 lg:px-10 z-50 rounded-md shadow  ${theme === "light" ? "bg-white text-black" : "bg-gray-950  border border-fuchsia-950"} transition duration-300`}
     >
       <div className="flex items-center gap-2">
-        <Button size={"icon"} className="rounded-full shadow">
+        <Button size={"icon"} className="rounded-full shadow cursor-pointer" onClick={()=>navigate('/')}>
           <Code />
         </Button>
         <h1>Stack</h1>
