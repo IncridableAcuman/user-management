@@ -1,4 +1,5 @@
 import { UseTheme } from "@/app/providers/ThemeProvider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
 import {
   DropdownMenu,
@@ -18,10 +19,14 @@ export const Navbar = () => {
       py-4 px-4 sm:px-6 md:px-8 lg:px-10 z-50 rounded-md shadow  ${theme === "light" ? "bg-white text-black" : "bg-gray-950  border border-fuchsia-950"} transition duration-300`}
     >
       <div className="flex items-center gap-2">
-        <Button size={"icon"} className="rounded-full shadow cursor-pointer" onClick={()=>navigate('/')}>
+        <Button
+          size={"icon"}
+          className="rounded-full shadow cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <Code />
         </Button>
-        <h1>Stack</h1>
+        <h1>UFQ</h1>
       </div>
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-3">
@@ -31,11 +36,10 @@ export const Navbar = () => {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <img
-              src="me.png"
-              alt="me"
-              className="w-10 h-10 rounded-full border-2 border-gray-700 shadow cursor-pointer"
-            />
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>UI</AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => navigate(`/profile`)}>
