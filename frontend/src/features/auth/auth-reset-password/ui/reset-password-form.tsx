@@ -8,7 +8,7 @@ export const ResetPasswordForm = () => {
     <div className="w-full min-h-screen flex items-center justify-between font-semibold">
       <div className="hidden sm:block w-full min-h-screen bg-gray-950 text-white">
         <h2 className="cursor-pointer p-6 text-lg font-semibold">
-          Andy<span className="text-blue-500 font-bold">Stack</span>
+          UFQ<span className="text-blue-500 font-bold">Group</span>
         </h2>
       </div>
       <div className="w-full bg-black text-white min-h-screen">

@@ -14,7 +14,7 @@ export const AuthPage = () => {
           <Button size={"icon"} className="rounded-full shadow">
             <Code />
           </Button>
-          <h1>Stack</h1>
+          <h1>UFQ</h1>
         </div>
       </div>
       <div className="w-full md:w-1/2 bg-black text-white min-h-screen flex flex-col items-center justify-center p-6">
