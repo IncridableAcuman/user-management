@@ -1,6 +1,6 @@
+
 export const AuthProvider = () => {
-    return (
-        <>
-        </>
-    )
+  return (
+    <div>AuthProvider</div>
+  )
 }
