@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class EditUserRequest {
@@ -25,4 +26,10 @@ public class EditUserRequest {
     private String phone;
     @Size(max = 500,message = ResponseMessage.BIO_MAX_LENGTH)
     private String bio;
+
+    private String country;
+
+    private List<String> skills;
+
+    private List<String> socialLinks;
 }

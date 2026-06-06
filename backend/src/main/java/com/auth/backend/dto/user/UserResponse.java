@@ -6,6 +6,7 @@ import com.auth.backend.entity.enums.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public record UserResponse(
         Long id,
@@ -21,7 +22,10 @@ public record UserResponse(
         Date birthDate,
         String bio,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        String country,
+        List<String> skills,
+        List<String> socialLinks
 
 ) {
     public static UserResponse from(UserEntity user){
@@ -39,7 +43,10 @@ public record UserResponse(
                 user.getBirthDate(),
                 user.getBio(),
                 user.getCreatedAt(),
-                user.getUpdatedAt()
+                user.getUpdatedAt(),
+                user.getCountry(),
+                user.getSkills(),
+                user.getSocialLinks()
         );
     }
 }

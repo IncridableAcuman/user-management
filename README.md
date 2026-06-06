@@ -19,16 +19,6 @@ Professional authentication system built with Spring Boot, React,Typescript and 
 - Redis
 - RabbitMQ
 
-### Frontend:
-- React
-- Vite
-- Typescript
-- Tailwind CSS
-- shadcn/ui
-- Zustand
-- React Router DOM
-- Axios
-- Zod
 
 ## Project Structure
 ```markdown
@@ -49,41 +39,9 @@ authorization
 |   |──pom.xml
 |   |──Dockerfile
 |
-|──frontend
-|   |──src/
-|       |──app/
-|       |──entities/
-|       |──features/
-|       |──pages/
-|       |──shared/
-|       |──widgets/
-|   |──Dockerfile
-|   |nginx.conf
-|
-|
 └── docker-compose.yml
 ```
 
-Agar FSD architecture ishlatilsa:
-
-```markdown
-frontend/src
-│
-├── app
-├── pages
-├── widgets
-├── features
-├── entities
-├── shared
-```
-## Features
-- User Registration
-- Login/Logout
-- Refresh Token Rotation
-- Role-Based Access Control
-- Email Verification
-- Forgot Password
-- Reset Password
 
 ## Authentication Flow
 1. User login in with email and password
@@ -108,7 +66,7 @@ SMTP_PASS=
 ```
 #### Frontend
 ```dotenv
-VITE_API_URL=http://localhost:8080/api/v1
+VITE_API_URL=http://your_host:your_port/api/v1
 ```
 ## Installation
 
@@ -117,12 +75,6 @@ VITE_API_URL=http://localhost:8080/api/v1
 cd backend
 mvn clean install
 mvn spring-boot:run
-```
-#### Frontend
-```text
-cd frontend
-npm install
-npm run dev
 ```
 #### Docker
 ```text
