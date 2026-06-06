@@ -32,7 +32,7 @@ export const ResetPasswordForm = () => {
                       type="password"
                       id="password"
                       placeholder="********"
-                      className="p-5 border border-blue-500"
+                      className="p-5"
                       required
                     />
                   </div>
@@ -42,14 +42,13 @@ export const ResetPasswordForm = () => {
                       type="password"
                       id="confirmPassword"
                       placeholder="********"
-                      className="p-5 border border-blue-500"
+                      className="p-5"
                       required
                     />
                   </div>
                   <div className="grid gap-3">
                     <Button
-                      variant={"outline"}
-                      className="text-black p-5 cursor-pointer border border-blue-500"
+                      className="text-black p-5 cursor-pointer"
                     >
                       Reset Password
                     </Button>
