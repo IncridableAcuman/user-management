@@ -23,6 +23,7 @@ public class UserProfileService {
         user.setAvatar(fileService.saveFile(avatar.getAvatar()));
         userRepository.save(user);
     }
+
     @Transactional
     public void removeAvatar(Long id){
         UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
@@ -30,6 +31,7 @@ public class UserProfileService {
         user.setAvatar(null);
         userRepository.save(user);
     }
+
     @Transactional
     public UserResponse editUser(Long id, EditUserRequest request){
         UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
@@ -40,6 +42,9 @@ public class UserProfileService {
         user.setBirthDate(request.getBirthDate());
         user.setBio(request.getBio());
         user.setPhone(request.getPhone());
+        user.setCountry(request.getCountry());
+        user.setSkills(request.getSkills());
+        user.setSocialLinks(request.getSocialLinks());
         UserEntity saved = userRepository.save(user);
         return UserResponse.from(saved);
     }

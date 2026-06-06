@@ -1,8 +1,8 @@
 package com.auth.backend.constant;
 
 public final class Endpoint {
-    public static final String ADMIN="/admin";
-    public static final String USER="/api/v1/user";
+    public static final String USER="/user";
+    public static final String ADMIN = "/api/v1/admin";
     public static final String AUTH="/api/v1/auth";
     public static final String PROFILE="/api/v1/user/profile";
     public static final String REGISTER="/register";

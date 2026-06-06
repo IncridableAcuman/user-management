@@ -18,8 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
-
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,6 @@ public class AuthService {
     private final RabbitMQProducer rabbitMQProducer;
     private final TokenService tokenService;
     private final EnvironmentValues environmentValues;
-    private final RedisService redisService;
 
     public void register(RegisterRequest request){
         if (userRepository.findByEmail(request.getEmail()).isPresent()){
@@ -56,27 +53,14 @@ public class AuthService {
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new CustomBadRequestException(ResponseMessage.MISMATCH_PASSWORD);
         }
-        String accessToken = jwtUtil.generateAccessToken(user);
-        String refreshToken = jwtUtil.generateRefreshToken(user);
-
-        tokenService.saveToken(user,refreshToken);
-
-        cookieUtil.addCookie(refreshToken,response);
-
-        return AuthResponse.from(accessToken);
+        return authResponse(user,response);
     }
     public AuthResponse refresh(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);
         if (!jwtUtil.validateToken(refreshToken,user.getEmail())){
             throw new CustomUnauthorizedException(ResponseMessage.INVALID_TOKEN);
         }
-        String newAccessToken = jwtUtil.generateAccessToken(user);
-        String newRefreshToken = jwtUtil.generateRefreshToken(user);
-
-        tokenService.saveToken(user,newRefreshToken);
-        cookieUtil.addCookie(newRefreshToken,response);
-
-        return AuthResponse.from(newAccessToken);
+        return authResponse(user,response);
     }
     public void logout(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);
@@ -115,17 +99,6 @@ public class AuthService {
         saveUser(user);
     }
 
-    public void sendOTP(String email){
-        UserEntity user = findUserByEmail(email);
-
-        SecureRandom random = new SecureRandom();
-        int otp = 100000 + random.nextInt(900000);
-        String stringOPTValue = String.valueOf(otp);
-        redisService.saveOTP(user.getEmail(), stringOPTValue);
-        EmailPayload payload = new EmailPayload(user.getEmail(),"Check this OTP",stringOPTValue);
-        rabbitMQProducer.sendMessageWithRabbitMQ(payload);
-    }
-
     public UserEntity findUserByEmail(String email){
         return userRepository.findByEmail(email).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
     }
@@ -135,6 +108,17 @@ public class AuthService {
         String url = environmentValues.getClientUrl() + "/verify-email?token="+token;
         EmailPayload payload = new EmailPayload(user.getEmail(),"Verify Email",url);
         rabbitMQProducer.sendMessageWithRabbitMQ(payload);
+    }
+
+    public AuthResponse authResponse(UserEntity user,HttpServletResponse response){
+        String accessToken = jwtUtil.generateAccessToken(user);
+        String refreshToken = jwtUtil.generateRefreshToken(user);
+
+        tokenService.saveToken(user,refreshToken);
+
+        cookieUtil.addCookie(refreshToken,response);
+
+        return AuthResponse.from(accessToken);
     }
 
 
