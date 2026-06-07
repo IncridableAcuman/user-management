@@ -30,4 +30,14 @@ public class UserProfileController {
     public ResponseEntity<UserResponse> editUser(@PathVariable Long id, @RequestBody EditUserRequest request){
         return ResponseEntity.ok(userProfileService.editUser(id,request));
     }
+    @DeleteMapping("/{id}/skills/{skillName}")
+    public ResponseEntity<String> removeSkills(@PathVariable Long id,@PathVariable String skillName){
+        userProfileService.removeSkills(id,skillName);
+        return ResponseEntity.ok(ResponseMessage.SUCCESS);
+    }
+    @DeleteMapping("/{id}/socials/{social}")
+    public ResponseEntity<String> removeSocialLink(@PathVariable Long id,@PathVariable String social){
+        userProfileService.removeSocialLinks(id,social);
+        return ResponseEntity.ok(ResponseMessage.SUCCESS);
+    }
 }
