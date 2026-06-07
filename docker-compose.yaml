@@ -7,19 +7,12 @@ services:
       - ./backend/.env
     ports:
       - "8080:8080"
-    environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6378
-      SPRING_DATA_RABBITMQ_HOST: rabbitmq
-      SPRING_DATA_RABBITMQ_PORT: 5673
     depends_on:
       - postgres
       - rabbitmq
       - redis
     volumes:
-      - upload_data:/app/upload
+      - upload_data:/app/uploads
       - logs_data:/app/logs
 
   postgres:
