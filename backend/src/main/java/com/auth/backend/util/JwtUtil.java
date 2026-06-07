@@ -36,7 +36,6 @@ public class JwtUtil {
         Map<String,Object> claims = new HashMap<>();
 
         claims.put("id",user.getId());
-        claims.put("email",user.getEmail());
         claims.put("role",user.getRole());
 
         long currentMillis = System.currentTimeMillis();
@@ -68,25 +67,27 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String extractEmail(String token){
+    public String extractSubject(String token){
         return extractClaims(token).getSubject();
     }
     public Date extractExpiration(String token){
         return extractClaims(token).getExpiration();
     }
     public boolean isTokenExpired(String token){
-        return extractExpiration(token).before(new Date());
+        return extractExpiration(token).after(new Date());
     }
-    public boolean validateToken(String token,String subject){
+
+    public boolean validateToken(String token){
         try {
-            UserEntity user = extractUser(token);
-            return user.getEmail().equals(subject) && !isTokenExpired(token);
+            return isTokenExpired(token) && extractSubject(token) != null;
         } catch (Exception e){
             return false;
         }
     }
+
+
     public UserEntity extractUser(String token){
-        String email = extractEmail(token);
+        String email = extractSubject(token);
         return userRepository.findByEmail(email).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
     }
 }

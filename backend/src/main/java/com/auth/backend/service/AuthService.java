@@ -57,14 +57,14 @@ public class AuthService {
     }
     public AuthResponse refresh(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);
-        if (!jwtUtil.validateToken(refreshToken,user.getEmail())){
+        if (!jwtUtil.validateToken(refreshToken)){
             throw new CustomUnauthorizedException(ResponseMessage.INVALID_TOKEN);
         }
         return authResponse(user,response);
     }
     public void logout(String refreshToken,HttpServletResponse response){
         UserEntity user = jwtUtil.extractUser(refreshToken);
-        if (!jwtUtil.validateToken(refreshToken,user.getEmail())){
+        if (!jwtUtil.validateToken(refreshToken)){
             throw new CustomUnauthorizedException(ResponseMessage.INVALID_TOKEN);
         }
         tokenService.removeToken(user);
@@ -92,7 +92,7 @@ public class AuthService {
 
     public void verifyEmail(String token){
         UserEntity user = jwtUtil.extractUser(token);
-        if (!jwtUtil.validateToken(token,user.getEmail())){
+        if (!jwtUtil.validateToken(token)){
             throw new CustomBadRequestException(ResponseMessage.INVALID_TOKEN);
         }
         user.setEnabled(true);
