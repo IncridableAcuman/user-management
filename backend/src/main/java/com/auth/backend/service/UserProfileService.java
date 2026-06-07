@@ -5,7 +5,6 @@ import com.auth.backend.dto.user.EditUserRequest;
 import com.auth.backend.dto.user.UserResponse;
 import com.auth.backend.entity.UserEntity;
 import com.auth.backend.exception.CustomNotFoundException;
-import com.auth.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,31 +15,28 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserProfileService {
-    private final UserRepository userRepository;
+    private final UserManagement userManagement;
     private final FileService fileService;
 
-    @Transactional
     public void uploadAvatar(Long id, MultipartFile avatar){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+        UserEntity user = userManagement.findUserById(id);
         String avatarName=null;
         if (avatar != null){
             avatarName = fileService.saveFile(avatar);
         }
         Optional.ofNullable(avatarName).ifPresent(user::setAvatar);
-        userRepository.save(user);
+        userManagement.saveUser(user);
     }
 
-    @Transactional
     public void removeAvatar(Long id){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+        UserEntity user = userManagement.findUserById(id);
         fileService.removeFile(user.getAvatar());
         user.setAvatar(null);
-        userRepository.save(user);
+        userManagement.saveUser(user);
     }
 
-    @Transactional
     public UserResponse editUser(Long id, EditUserRequest request){
-        UserEntity user = userRepository.findById(id).orElseThrow(()-> new CustomNotFoundException(ResponseMessage.NOT_FOUND));
+        UserEntity user = userManagement.findUserById(id);
         Optional.ofNullable(request.getFirstName()).ifPresent(user::setFirstName);
         Optional.ofNullable(request.getLastName()).ifPresent(user::setLastName);
         Optional.ofNullable(request.getUsername()).ifPresent(user::setUsername);
@@ -54,4 +50,26 @@ public class UserProfileService {
 
         return UserResponse.from(user);
     }
+    @Transactional
+    public void removeSkills(Long id,String skillName){
+        UserEntity user = userManagement.findUserById(id);
+        boolean isRemoved = user.getSkills()
+                .removeIf(skill-> skill.equals(skillName));
+
+        if (!isRemoved){
+            throw new CustomNotFoundException(ResponseMessage.NOT_FOUND);
+        }
+        userManagement.saveUser(user);
+    }
+    @Transactional
+    public void removeSocialLinks(Long id,String social){
+        UserEntity user = userManagement.findUserById(id);
+        boolean isRemoved = user.getSocialLinks().removeIf(s->s.equals(social));
+        if (!isRemoved){
+            throw new CustomNotFoundException(ResponseMessage.NOT_FOUND);
+        }
+        userManagement.saveUser(user);
+    }
+
+
 }
